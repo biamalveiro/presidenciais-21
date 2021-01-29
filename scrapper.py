@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import requests
+import argparse
+import pandas as pd
 from tqdm import tqdm
 
 
@@ -13,19 +15,19 @@ def get_territory_children(territory_key):
     return response.json()
 
 
-def get_territory_results(territory_key):
+def get_territory_results(territory_key, level):
     response = requests.get(
         f"{URL}/TerritoryResults?electionId=PR&territoryKey={territory_key}"
     )
     results = response.json()["currentResults"]
 
     territory_data = {
-        "territory_voters_percentage": results["percentageVoters"],
-        "territory_voters_count": results["numberVoters"],
-        "territory_blank_percentage": results["blankVotesPercentage"],
-        "territory_blank_count": results["blankVotes"],
-        "territory_null_percentage": results["nullVotesPercentage"],
-        "territory_null_count": results["nullVotes"],
+        f"{level}_voters_percentage": results["percentageVoters"],
+        f"{level}_voters_count": results["numberVoters"],
+        f"{level}_blank_percentage": results["blankVotesPercentage"],
+        f"{level}_blank_count": results["blankVotes"],
+        f"{level}_null_percentage": results["nullVotesPercentage"],
+        f"{level}_null_count": results["nullVotes"],
     }
 
     candidate_results = results["resultsParty"]
@@ -44,32 +46,61 @@ def get_territory_results(territory_key):
     return tidy_results
 
 
-def get_full_results(regions):
+def get_full_results_df(regions):
     results = []
-    for region in tqdm(regions):
-        cities = get_territory_children(region["territoryKey"])
-        for city in cities:
+    for region in tqdm(regions, desc="Districts"):
+        counties = get_territory_children(region["territoryKey"])
+        for county in tqdm(counties, desc=f"Counties in {region['name']}"):
+            parishes = get_territory_children(county["territoryKey"])
+            for parish in parishes:
+                candidates_results_in_parish = get_territory_results(
+                    parish["territoryKey"], "parish"
+                )
 
-            candidates_results_in_city = get_territory_results(city["territoryKey"])
+                for candidate_result in candidates_results_in_parish:
+                    row = {
+                        "region_name": region["name"],
+                        # "region_territory_key": region["territoryKey"],
+                        "county_name": county["name"],
+                        # "county_territory_key": county["territoryKey"],
+                        "parish_name": parish["name"],
+                        # "parish_territory_key": parish["territoryKey"],
+                        **candidate_result,
+                    }
 
-            for candidate_result in candidates_results_in_city:
-                row = {
-                    "region_name": region["name"],
-                    # "region_territory_key": region["territoryKey"],
-                    "city_name": city["name"],
-                    # "city_territory_key": city["territoryKey"],
-                    **candidate_result,
-                }
+                    results.append(row)
 
-                results.append(row)
-
-    return results
+    return pd.DataFrame(results)
 
 
-def main():
+def main(output_filename, file_format):
     regions = get_territory_children(PT_TERRITORY_KEY)
-    return get_full_results(regions)
+    results_df = get_full_results_df(regions)
+
+    if file_format == "csv":
+        results_df.to_csv(output_filename, index=False)
+    elif file_format == "json":
+        results_df.to_json(output_filename, orient="records")
+    else:
+        print(results)
 
 
 if __name__ == "__main__":
-    print(main())
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="output file name",
+        type=str,
+        required=True,
+    )
+    parser.add_argument(
+        "-f",
+        "--format",
+        help="output file format",
+        type=str,
+        choices=["csv", "json"],
+        required=True,
+    )
+    args = parser.parse_args()
+    main(args.output, args.format)
