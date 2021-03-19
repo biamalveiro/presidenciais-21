@@ -6,7 +6,7 @@ Que freguesias portuguesas são mais parecidas na forma como votam? Utilizando d
 
 Ainda, o tamanho de cada circulo é proporcional ao número de votos da freguesia. Se uma freguesia votou muito mais num candidato, em comparação com o resto do país, a cor do seu circulo representa esse candidato. 
 
-*What portuguese parishes are more alike in the way they vote? Using data from the 2021 presidential elections, this visualization uses circles (representing the parishes) that are positioned in a way to preserve the distance between the parishes' voting distribution. This way, parishes that voted in a similar way should be placed closer together. ([UMAP](https://github.com/lmcinnes/umap)*)
+*What portuguese parishes are more alike in the way they vote? Using data from the 2021 presidential elections, this visualization uses circles (representing the parishes) that are positioned to be closer together if the distance between the parishes' voting distribution is small. ([UMAP](https://github.com/lmcinnes/umap)*)
 
 *The size of each circle is proportional to the number of votes in the parish. If a parish voted much more for a candidate compared to the rest of the country, then its color represents that candidate.*
 
