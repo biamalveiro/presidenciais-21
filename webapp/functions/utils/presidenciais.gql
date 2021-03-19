@@ -1,0 +1,19 @@
+type Parish {
+  id: ID!
+  dicofre: String!
+  name: String!
+  county: String!
+  region: String!
+  map: String
+  results: String
+  x: Float
+  y: Float
+  neighbor: String
+  outlier: String
+  votes: Int
+}
+
+type Query {
+  parishes: [Parish]
+  parish(dicofre: String!): Parish
+}
