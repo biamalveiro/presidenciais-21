@@ -5,9 +5,6 @@ import WindowedSelect from "react-windowed-select";
 
 import { selectOptionsParish } from "../utils/transformations";
 
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiYmlhbWFsdmVpcm8iLCJhIjoiY2tsNmdvZmRyMWRxeTJwbW4zOW4zNmQ3cyJ9.CL5mthIghshhSssO4Atm1w"; // Set your mapbox token here
-
 const parishBoundsLayer = {
   id: "pt-parish-outline",
   type: "line",
