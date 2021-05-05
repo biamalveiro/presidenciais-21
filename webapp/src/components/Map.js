@@ -1,11 +1,10 @@
-import { isUndefined } from "lodash";
+import mapboxgl from "mapbox-gl";
 import React, { useState, useEffect } from "react";
 import ReactMapGL, { Source, Layer, WebMercatorViewport } from "react-map-gl";
-import { createFilter } from "react-select";
-import WindowedSelect from "react-windowed-select";
 import * as turf from "@turf/turf";
 
-import { scaleColor } from "../utils/scales";
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export default function Map(props) {
   const parishBoundsLayer = {

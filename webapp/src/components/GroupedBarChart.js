@@ -1,4 +1,12 @@
 import React, { useMemo } from "react";
+import { Group } from "@visx/group";
+import { AxisLeft } from "@visx/axis";
+import { scaleLinear, scaleBand } from "d3-scale";
+import { Bar } from "@visx/shape";
+import { find } from "lodash";
+import { Text } from "@visx/text";
+
+import { useChartDimensions } from "../utils/hooks";
 
 import marceloRebeloSousaImage from "../resources/marcelo-rebelo-sousa.png";
 import anaGomesImage from "../resources/ana-gomes.png";
@@ -7,13 +15,6 @@ import joaoFerreiraImage from "../resources/joao-ferreira.png";
 import marisaMatiasImage from "../resources/marisa-matias.png";
 import tiagoMayanGoncalvesImage from "../resources/tiago-mayan-goncalves.png";
 import vitorinoSilvaImage from "../resources/vitorino-silva.png";
-import { Group } from "@visx/group";
-import { AxisLeft } from "@visx/axis";
-import { scaleLinear, scaleBand } from "d3-scale";
-import { useChartDimensions } from "../utils/hooks";
-import { Bar } from "@visx/shape";
-import { find } from "lodash";
-import { Text } from "@visx/text";
 
 const candidateImages = {
   "Marcelo Rebelo de Sousa": marceloRebeloSousaImage,

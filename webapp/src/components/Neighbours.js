@@ -1,31 +1,10 @@
 import { isUndefined } from "lodash";
 import React, { useState, useEffect } from "react";
-import ReactMapGL, { Source, Layer, WebMercatorViewport } from "react-map-gl";
 import { createFilter } from "react-select";
 import WindowedSelect from "react-windowed-select";
-import * as turf from "@turf/turf";
 
 import Map from "./Map";
 import GroupedBarChart from "./GroupedBarChart";
-
-const parishBoundsLayer = {
-  id: "pt-parish-outline",
-  type: "line",
-  paint: {
-    "line-width": 1,
-    "line-color": "#0080ef",
-  },
-};
-
-const parishFillLayer = {
-  id: "pt-parish-fill",
-  type: "fill",
-  paint: {
-    "fill-opacity": 0.1,
-    "fill-color": "#0080ef",
-    "fill-outline-color": "#0080ef",
-  },
-};
 
 export default function Neighbours(props) {
   const [selectedParishId, setSelectedParishId] = useState("110660");
