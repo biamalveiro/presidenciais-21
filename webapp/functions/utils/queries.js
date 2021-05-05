@@ -34,11 +34,25 @@ const GET_PARISH_BY_DICOFRE = `
             results
         }
     }
+`;
 
+const GET_PARISH_MAP = `
+query ($dicofre: String!){
+    parish (dicofre: $dicofre) {
+                    name,
+                    county,
+                    region,
+                    results
+                    map,
+                    neighbor,
+                    outlier
+        }
+    }
 `;
 
 module.exports = {
   GET_PARISHES_SCATTER,
   GET_PARISHES_LIST,
   GET_PARISH_BY_DICOFRE,
+  GET_PARISH_MAP,
 };

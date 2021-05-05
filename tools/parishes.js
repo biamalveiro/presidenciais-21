@@ -107,7 +107,10 @@ parishes = parishes.map((parish) => {
   )[0];
 
   const parishMap = map.features.filter(
-    (geoFeature) => geoFeature.properties["DICOFRE"] == parish["dicofre"]
+    (geoFeature) =>
+      geoFeature.properties["DICOFRE"] == parish["dicofre"] ||
+      geoFeature.properties["Dicofre"] == parish["dicofre"] ||
+      geoFeature.properties["dicofre"] == parish["dicofre"]
   )[0];
 
   const parishDistances = distMatrix.filter(

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EmbeddingProjection from "./components/EmbeddingProjection";
+import Neighbours from "./components/Neighbours";
 
 function App() {
   const [parishesList, setParishesList] = useState([]);
@@ -20,6 +21,7 @@ function App() {
         <h3 className="text-4xl font-bold	">Vizinhos Eleitorais</h3>
       </header>
       <EmbeddingProjection parishesList={parishesList} />
+      <Neighbours parishesList={parishesList} />
     </div>
   );
 }
