@@ -35,7 +35,8 @@
     "react-window": "^1.8.6",
     "react-windowed-select": "^3.0.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "worker-loader": "^3.0.8"
   },
   "scripts": {
     "start": "craco start",
@@ -53,7 +54,10 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "not ie 11", 
+      "not chrome < 51", 
+      "not safari < 10"
     ],
     "development": [
       "last 1 chrome version",
