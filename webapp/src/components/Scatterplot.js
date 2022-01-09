@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { isUndefined } from "lodash";
 import { Circle } from "@visx/shape";
-import { useTooltip, TooltipWithBounds } from "@visx/tooltip";
-import { localPoint } from "@visx/event";
 import { max, extent } from "d3-array";
 import { scaleLinear, scalePow } from "d3-scale";
+import Tippy, { useSingleton } from "@tippyjs/react";
 
 import { scaleColor } from "../utils/scales";
 import { useOnClickOutside } from "../utils/hooks";
@@ -12,43 +11,46 @@ import { useOnClickOutside } from "../utils/hooks";
 const WIDTH = 800;
 const HEIGHT = 800 / 2;
 
-const ScatterCircle = (props) => {
-  return (
-    <Circle
-      cx={props.cx}
-      cy={props.cy}
-      r={props.r}
-      fill={props.color}
-      fillOpacity={
-        props.isActive || props.isHover ? 1 : props.isFaded ? 0.1 : 0.3
-      }
-      stroke={props.isActive ? "#374151" : props.color}
-      strokeWidth={props.isActive ? 2 : 0.5}
-      strokeOpacity={props.isFaded ? 0.5 : 1}
-      onClick={() => props.setActiveParishId(props.parishId)}
-      onMouseOver={props.onMouseOver}
-      onMouseOut={props.onMouseOut}
-    />
-  );
-};
+const ScatterCircle = React.memo(
+  ({ cx, cy, r, color, name, isActive, isFaded, onClick, target }) => {
+    const [isOnHover, setIsOnHover] = useState(false);
+    return (
+      <Tippy
+        content={
+          <div className="border rounded border-gray-300 shadow-lg py-1 px-2 bg-white text-sm">
+            {name}
+          </div>
+        }
+        singleton={target}
+        delay={500}
+      >
+        <g>
+          <Circle
+            cx={cx}
+            cy={cy}
+            r={r}
+            fill={color}
+            fillOpacity={isActive || isOnHover ? 1 : isFaded ? 0.1 : 0.3}
+            stroke={isActive ? "#374151" : color}
+            strokeWidth={isActive ? 2 : 0.5}
+            strokeOpacity={isFaded ? 0.5 : 1}
+            onClick={onClick}
+            onMouseEnter={() => setIsOnHover(true)}
+            onMouseLeave={() => setIsOnHover(false)}
+            className="cursor-pointer"
+          />
+        </g>
+      </Tippy>
+    );
+  }
+);
 
 export default function Scatterplot(props) {
   const [parishes, setParishes] = useState([]);
-  const [hoverParish, setHoverParish] = useState();
+  const [source, target] = useSingleton();
   const containerRef = useRef();
   const pointsRef = useRef();
-  const {
-    tooltipData,
-    tooltipLeft,
-    tooltipTop,
-    tooltipOpen,
-    showTooltip,
-    hideTooltip,
-  } = useTooltip({
-    detectBounds: true,
-    scroll: true,
-    containerRef,
-  });
+
   useOnClickOutside(pointsRef, () => props.setActiveParishId());
 
   const loadParishes = async () => {
@@ -64,16 +66,6 @@ export default function Scatterplot(props) {
   const activeParishDatum = parishes.filter(
     (parish) => parish.dicofre === props.activeParishId
   )[0];
-
-  const handleMouseOver = (event, datum) => {
-    setHoverParish(datum.dicofre);
-    const coords = localPoint(containerRef.current, event);
-    showTooltip({
-      tooltipLeft: coords.x,
-      tooltipTop: coords.y,
-      tooltipData: datum,
-    });
-  };
 
   const scaleX = scaleLinear()
     .domain(extent(parishes, (d) => d.x))
@@ -91,10 +83,10 @@ export default function Scatterplot(props) {
 
   return (
     <div>
+      <Tippy singleton={source} />
       <svg ref={containerRef} width={WIDTH} height={HEIGHT}>
         <g ref={pointsRef}>
           {parishes.map((d) => {
-            const isHover = d.dicofre === hoverParish;
             return (
               <ScatterCircle
                 key={`embedding-${d.dicofre}`}
@@ -102,12 +94,10 @@ export default function Scatterplot(props) {
                 cy={scaleY(d.y)}
                 r={scaleSize(d.votes)}
                 color={scaleColor(d.outlier)}
-                parishId={d.dicofre}
-                setActiveParishId={props.setActiveParishId}
-                onMouseOver={(event) => handleMouseOver(event, d)}
-                onMouseOut={hideTooltip}
-                isHover={isHover}
+                name={d.name}
+                onClick={() => props.setActiveParishId(d.dicofre)}
                 isFaded={!isUndefined(props.activeParishId)}
+                tooltipTarget={target}
               />
             );
           })}
@@ -117,24 +107,14 @@ export default function Scatterplot(props) {
               cy={scaleY(activeParishDatum.y)}
               r={scaleSize(activeParishDatum.votes)}
               color={scaleColor(activeParishDatum.outlier)}
-              parishId={activeParishDatum.dicofre}
-              setActiveParishId={props.setActiveParishId}
+              name={activeParishDatum.name}
+              onClick={() => props.setActiveParishId(activeParishDatum.dicofre)}
               isActive
-              onMouseOver={(event) => handleMouseOver(event, activeParishDatum)}
-              onMouseOut={hideTooltip}
+              tooltipTarget={target}
             />
           ) : null}
         </g>
       </svg>
-      {tooltipOpen && (
-        <TooltipWithBounds
-          key={Math.random()}
-          top={tooltipTop}
-          left={tooltipLeft}
-        >
-          {tooltipData.name}
-        </TooltipWithBounds>
-      )}
     </div>
   );
 }

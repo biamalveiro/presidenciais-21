@@ -5,6 +5,7 @@ import WindowedSelect from "react-windowed-select";
 
 import Map from "./Map";
 import GroupedBarChart from "./GroupedBarChart";
+import { scaleColor, scaleColorDarker } from "../utils/scales";
 
 export default function Neighbours(props) {
   const [selectedParishId, setSelectedParishId] = useState("110660");
@@ -45,8 +46,15 @@ export default function Neighbours(props) {
 
   return (
     <div className="m-auto w-9/12 mt-28 mb-10">
+      <h3 className="font-semibold text-2xl mx-4 mb-2">
+        🏡 Encontrar um vizinho eleitoral
+      </h3>
+      <p className="mx-4 text-gray-600 text-sm w-1/2 mb-4">
+        Escolhe uma freguesia e descobre qual é o seu vizinho eleitoral mais
+        próximo - a freguesia com a distribuição de votos mais parecida à
+        distribuição da freguesia escolhida.
+      </p>
       <div className=" flex flex-col w-4/12">
-        <h3 className="font-bold text-2xl mx-4">Encontrar um vizinho</h3>
         <WindowedSelect
           className="m-4"
           onChange={handleSelectChange}
@@ -65,12 +73,15 @@ export default function Neighbours(props) {
       </div>
       {!isUndefined(parish) && !isUndefined(neighbor) ? (
         <div className="flex flex-row ml-4 justify-center">
-          <Map parish={parish} color={"#3B82F6"} />
+          <Map parish={parish} color={scaleColor(parish.outlier)} />
           <GroupedBarChart
-            parish={{ color: "#3B82F6", ...parish }}
-            neighbor={{ color: "#7C3AED", ...neighbor }}
+            parish={{ color: scaleColor(parish.outlier), ...parish }}
+            neighbor={{
+              color: scaleColorDarker(neighbor.outlier),
+              ...neighbor,
+            }}
           />
-          <Map parish={neighbor} color={"#7C3AED"} />
+          <Map parish={neighbor} color={scaleColorDarker(neighbor.outlier)} />
         </div>
       ) : null}
     </div>

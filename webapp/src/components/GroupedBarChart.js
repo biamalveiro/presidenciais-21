@@ -37,7 +37,8 @@ const candidates = [
 ];
 
 const chartSettings = {
-  marginLeft: 60,
+  marginLeft: 40,
+  height: 280,
 };
 
 export default function GroupedBarChart(props) {
@@ -53,7 +54,7 @@ export default function GroupedBarChart(props) {
       scaleBand()
         .domain(candidates)
         .range([0, dimensions.boundedHeight])
-        .padding(0.15),
+        .padding(0.2),
     [dimensions.boundedHeight]
   );
 
@@ -76,6 +77,7 @@ export default function GroupedBarChart(props) {
                   x={0}
                   y={scaleY(candidate) + scaleY.bandwidth() / 2}
                   fill={props.parish.color}
+                  stroke="white"
                 />
                 <Bar
                   width={scaleX(candidateNeighborResults.votesPercentage)}
@@ -83,6 +85,7 @@ export default function GroupedBarChart(props) {
                   x={0}
                   y={scaleY(candidate) + scaleY.bandwidth()}
                   fill={props.neighbor.color}
+                  stroke="white"
                 />
                 <Text
                   textAnchor="start"
@@ -91,7 +94,7 @@ export default function GroupedBarChart(props) {
                   x={scaleX(candidateParishResults.votesPercentage)}
                   y={scaleY(candidate) + scaleY.bandwidth() / 2}
                   dx={5}
-                  dy={3}
+                  dy={1}
                   fill={props.parish.color}
                 >
                   {`${candidateParishResults.votesPercentage}%`}
@@ -103,7 +106,7 @@ export default function GroupedBarChart(props) {
                   x={scaleX(candidateNeighborResults.votesPercentage)}
                   y={scaleY(candidate) + scaleY.bandwidth()}
                   dx={5}
-                  dy={3}
+                  dy={1}
                   fill={props.neighbor.color}
                 >
                   {`${candidateNeighborResults.votesPercentage}%`}
@@ -126,7 +129,6 @@ export default function GroupedBarChart(props) {
               y={props.y}
               href={candidateImages[props.formattedValue]}
               height={scaleY.bandwidth()}
-              width={scaleY.bandwidth()}
             />
           )}
         />
