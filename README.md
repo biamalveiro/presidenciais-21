@@ -1,7 +1,5 @@
 # presidenciais-21
 
-[![Status](https://img.shields.io/badge/status-in%20progress-orange.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-
 Que freguesias portuguesas são mais parecidas na forma como votam? Utilizando dados das eleições presidenciais de 2021, esta visualização distribui círculos representantes de cada freguesia no espaço de forma a preservar a distancia entre as suas distribuições de votos. Isto é, freguesias que votaram de forma parecida devem aparecer próximas na projeção. ([UMAP](https://github.com/lmcinnes/umap))
 
 Ainda, o tamanho de cada circulo é proporcional ao número de votos da freguesia. Se uma freguesia votou muito mais num candidato, em comparação com o resto do país, a cor do seu circulo representa esse candidato. 
