@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+
+model Parish {
+    dicofre   String @id @default(cuid())
+    name      String
+    county    String
+    region    String
+    votes     Int
+    outlier   String
+    x         Float
+    y         Float
+    neighbor  String
+    distanceToTotal Float
+}
+
+model Result {
+    id String @id @default(cuid())
+    candidate String
+    votesPercentage Float
+    votes Int
+    type String
+    name String
+    dicofre String
+}
+
+model Total {
+    id String @id @default(cuid())
+    candidate String
+    votesPercentage Float
+    votes Int
+    type String
+}
+
+model Feature {
+    dicofre String @id @default(cuid())
+    name String
+    map String
+}
+
+model Example {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

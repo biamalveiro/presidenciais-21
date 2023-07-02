@@ -65,7 +65,7 @@ def main(input_filename, output_filename):
         ],
         axis=1,
     )
-    embedding_df.to_json(output_filename, orient="records")
+    embedding_df.to_json(output_filename, orient="records", indent=2)
 
 
 if __name__ == "__main__":

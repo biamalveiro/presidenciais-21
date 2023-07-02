@@ -24,7 +24,7 @@ def main(input_parishes_filename, input_total_filename, output_filename):
         l1_distance_matrix, columns=df_pivot["parish_territory_key"]
     )
     distance_matrix_df["parish_territory_key"] = df_pivot["parish_territory_key"]
-    distance_matrix_df.to_json(output_filename, orient="records")
+    distance_matrix_df.to_json(output_filename, orient="records", indent=2)
 
 
 if __name__ == "__main__":
