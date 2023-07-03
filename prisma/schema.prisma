@@ -2,23 +2,26 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
-    previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
+  previewFeatures = ["jsonProtocol"]
 }
-
+ 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
 }
 
 
 model Parish {
     dicofre   String @id @default(cuid())
     name      String
+    parish_name String
     county    String
     region    String
     votes     Int
-    outlier   String
+    outlier   String?
     x         Float
     y         Float
     neighbor  String
@@ -27,7 +30,7 @@ model Parish {
 
 model Result {
     id String @id @default(cuid())
-    candidate String
+    candidate String?
     votesPercentage Float
     votes Int
     type String
@@ -37,7 +40,7 @@ model Result {
 
 model Total {
     id String @id @default(cuid())
-    candidate String
+    candidate String?
     votesPercentage Float
     votes Int
     type String
@@ -47,10 +50,4 @@ model Feature {
     dicofre String @id @default(cuid())
     name String
     map String
-}
-
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 }

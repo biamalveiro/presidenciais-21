@@ -138,6 +138,7 @@ const parishTable = parishes.map((parish) => {
     y: parishEmbedding?.y,
     neighbor,
     distanceToTotal,
+    parish_name: undefined,
   };
 });
 
@@ -166,7 +167,7 @@ const resultsTable = parishes
       ...result,
       dicofre: parish["dicofre"],
       name: parish["name"],
-      id: `${parish["dicofre"]}-${result["candidate"]}`,
+      id: `${parish["dicofre"]}-${result["candidate"]}-${result["type"]}}`,
     }));
   })
   .flat();

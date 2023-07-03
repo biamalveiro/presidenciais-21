@@ -1,0 +1,8 @@
+{
+  "title": "Electoral Neighbors",
+  "subtitle": "Presidential Elections 2021",
+  "intro-text": "Using data from the 2021 presidential elections, this visualization distributes circles representing each parish in space in order to preserve the distance between their vote distributions. That is, parishes that voted in a similar way should appear close together in the projection. Additionally, the size of each circle is proportional to the number of votes in the parish. If a parish voted significantly more for a candidate compared to the rest of the country, the color of its circle represents that candidate.",
+  "search-placeholder": "Find a parish",
+  "national-results": "National Results",
+  "votes": "votes"
+}
