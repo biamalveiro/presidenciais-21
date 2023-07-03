@@ -14,6 +14,8 @@ _The size of each circle is proportional to the number of votes in the parish. I
 
 Python was used for scrapping the data, as well as running the pre-processing steps: tidy up the data, calculate distances between distributions, running UMAP to obtain the 2D projection. The scripts for the different steps of this pipeline are in `tools/`.
 
+The final data processing step of creating the final datasets is done with Typescript with the script `data/data-wrangle.mts`.
+
 ### Getting Started
 
 1. `npm install`
