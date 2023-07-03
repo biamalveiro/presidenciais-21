@@ -87,8 +87,6 @@ const BarChart = withParentSize(
                 candidateParishResult?.votesPercentage ?? 0
               );
 
-              console.log("hello", candidateTotalResult, candidateParishResult);
-
               const textResults =
                 selectedParish && candidateParishResult
                   ? candidateParishResult
@@ -96,16 +94,18 @@ const BarChart = withParentSize(
                   ? candidateTotalResult
                   : null;
 
+              const color =
+                selectedParish?.outlier === candidate
+                  ? (candidates[candidate].color.main as string)
+                  : fallbackColor.main;
+
               return (
                 <Group key={candidate}>
                   {selectedParish && (
                     <motion.rect
                       animate={{
                         width: barLength,
-                        fill:
-                          selectedParish?.outlier === candidate
-                            ? candidates[candidate].color.main
-                            : fallbackColor.main,
+                        fill: color,
                       }}
                       x={0}
                       y={scaleY(candidate) ?? 0}
